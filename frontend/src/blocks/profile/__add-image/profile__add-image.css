@@ -1,0 +1,10 @@
+.profile__add-image {
+    height: 22px;
+    width: 100%;
+}
+
+@media (max-width: 767px) {
+    .profile__add-image {
+        height: 16px;
+    }
+}

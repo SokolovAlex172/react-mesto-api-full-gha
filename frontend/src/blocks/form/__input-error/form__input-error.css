@@ -1,0 +1,15 @@
+.form__input-error {
+    color:rgba(255, 0, 0, 1);
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 1.25;
+    top: calc(100% + 5px);
+    position: absolute;
+    left: 0;
+    text-align: left;
+    display: flex;
+    opacity: 0;
+    transition: 0.3s;
+}

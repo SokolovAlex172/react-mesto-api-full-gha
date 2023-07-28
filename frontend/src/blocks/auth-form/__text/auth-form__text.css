@@ -1,0 +1,15 @@
+.auth-form__text {
+	margin: 0;
+	text-align: center;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  font-family: 'Inter', sans-serif;
+
+}
+
+.auth-form__text .link {
+	font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+}

@@ -1,0 +1,10 @@
+.profile__text {
+    max-width: 340px;
+    
+}
+
+@media (max-width: 767px) {
+    .profile__text {
+        max-width: 208px;
+    }
+}

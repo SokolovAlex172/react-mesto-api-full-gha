@@ -1,0 +1,32 @@
+.profile__edit {
+    vertical-align: top;
+    outline: 0;
+    cursor: pointer;
+    background: none;
+    height: 24px;
+    width: 24px;
+    border: 1px solid #fff;
+    margin-top: 15px;
+    align-items: center;
+    display: flex;
+    padding: 0;
+    justify-content: center;
+    position: absolute;
+    right: -40px;
+    top: 22px;
+    transition: all 0.3s;
+}
+
+.profile__edit:hover {
+    opacity: 0.6;
+}
+
+@media (max-width: 767px) {
+    .profile__edit {
+        margin-top: 8px;
+        height: 18px;
+        width: 18px;
+        right: -30px;
+        top: 0;
+    }
+}

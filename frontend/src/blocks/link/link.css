@@ -1,0 +1,13 @@
+.link {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+  text-decoration: none;
+  color: hsl(0, 0%, 100%);
+  opacity: 1;
+
+}
+
+.link:hover {
+  transition: opacity .5s;
+}

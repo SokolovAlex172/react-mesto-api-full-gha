@@ -1,0 +1,11 @@
+.profile__side {
+    display: flex;
+}
+
+@media (max-width: 767px) {
+    .profile__side {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+    }
+}
