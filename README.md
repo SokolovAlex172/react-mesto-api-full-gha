@@ -9,8 +9,8 @@
 
 ## Ссылки на проект
 
-IP-адрес x.x.x.x
+IP-адрес 51.250.90.178
 
-Frontend https://...
+Frontend https://sokolov172.nomoredomains.sbs
 
-Backend https://...
+Backend https://api.sokolov172.nomoredomains.sbs

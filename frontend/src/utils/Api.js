@@ -39,20 +39,6 @@ export default class Api {
       }).then((res) => this._checkStatus(res));
     }
 
-    // addLike(cardId) {
-    //   return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-    //     method: "PUT",
-    //     headers: this.headers,
-    //   }).then((res) => this._checkStatus(res));
-    // }
-
-    // removeLike(cardId) {
-    //   return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
-    //     method: "DELETE",
-    //     headers: this.headers,
-    //   }).then((res) => this._checkStatus(res));
-    // }
-
     setUserInfo(data) {
       return fetch(`${this.baseUrl}/users/me`, {
         method: 'PATCH',
@@ -90,24 +76,13 @@ export default class Api {
         .then((res) => this._checkStatus(res));
       }
     }
-
-    // changeLikeCardStatus(cardId, isLiked) {
-    //   const token = localStorage.getItem('jwt');
-    //   return fetch(`${this._baseUrl}/cards/like/${cardId}`, {
-    //     method: isLiked ? "DELETE" : "PUT",
-    //     headers: {
-    //       authorization: `Bearer ${token}`,
-    //       'Content-Type': 'application/json',
-    //   },
-    //   }).then((res) => this._checkStatus(res));
-    // }
 }
 
 
 const token = localStorage.getItem('jwt');
 
 export const api = new Api({
-  baseUrl: "http://localhost:3001",
+  baseUrl: "https://api.sokolov172.nomoredomains.sbs",
   headers: {
     authorization: `Bearer ${token}`,
     'Content-Type': 'application/json'
