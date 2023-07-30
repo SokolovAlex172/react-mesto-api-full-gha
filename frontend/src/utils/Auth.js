@@ -1,4 +1,4 @@
-const BASE_URL = "https://api.sokolov172.nomoredomains.sbs";
+const BASE_URL = "https://api.sokolov172.nomoreparties.co";
 
 
 export function checkResponse(response) {

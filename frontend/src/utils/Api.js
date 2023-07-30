@@ -82,7 +82,7 @@ export default class Api {
 const token = localStorage.getItem('jwt');
 
 export const api = new Api({
-  baseUrl: "https://api.sokolov172.nomoredomains.sbs",
+  baseUrl: "https://api.sokolov172.nomoreparties.co",
   headers: {
     authorization: `Bearer ${token}`,
     'Content-Type': 'application/json'
