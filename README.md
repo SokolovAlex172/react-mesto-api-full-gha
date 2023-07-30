@@ -13,4 +13,4 @@ IP-адрес 51.250.90.178
 
 Frontend https://sokolov172.nomoredomains.sbs
 
-Backend https://api.sokolov172.nomoredomains.sbs
+Backend https://api.sokolov172.nomoreparties.co

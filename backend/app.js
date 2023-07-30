@@ -22,6 +22,8 @@ const errorHandler = require('./middlewares/error-handler');
 const allowedCors = [
   'http://sokolov172.nomoredomains.sbs',
   'https://sokolov172.nomoredomains.sbs',
+  'http://api.sokolov172.nomoreparties.co',
+  'https://api.sokolov172.nomoreparties.co',
   'localhost:3000',
   'http://localhost',
   'http://localhost:3001',
