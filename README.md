@@ -9,7 +9,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 51.250.90.178
+IP-адрес 84.201.129.249
 
 Frontend https://sokolov172.nomoredomains.sbs
 
