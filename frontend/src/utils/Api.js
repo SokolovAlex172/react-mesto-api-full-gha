@@ -1,7 +1,7 @@
 export default class Api {
   constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
+    this.baseUrl = options.baseUrl;
+    this.headers = options.headers;
   }
     _checkStatus(res) {
       if (res.ok) return res.json();
@@ -9,73 +9,107 @@ export default class Api {
     }
 
     getInitialCards() {
-      return fetch(`${this._baseUrl}/cards`, {
-        headers: this._headers,
+      return fetch(`${this.baseUrl}/cards`, {
+        headers: this.headers
       }).then((res) => this._checkStatus(res));
     }
 
     getUserInfo() {
-      return fetch(`${this._baseUrl}/users/me`, {
-        headers: this._headers,
+      this.headers.authorization = `Bearer ${localStorage.getItem('jwt')}`
+      return fetch(`${this.baseUrl}/users/me`, {
+        headers: this.headers
       }).then((res) => this._checkStatus(res));
-    }
-    addNewCard({name, link}) {
-      return fetch(`${this._baseUrl}/cards`, {
-         method: "POST",
-         headers: this._headers,
-         body: JSON.stringify({name, link}),
+      }
+
+    addNewCard(data) {
+      return fetch(`${this.baseUrl}/cards`, {
+        method: 'POST',
+        headers: this.headers,
+        body: JSON.stringify({
+          name: `${data.name}`,
+          link: `${data.link}`
+        })
       }).then((res) => this._checkStatus(res));
     }
 
     deleteCard(cardId) {
-      return fetch(`${this._baseUrl}/cards/${cardId}`, {
-        method: "DELETE",
-        headers: this._headers,
+      return fetch(`${this.baseUrl}/cards/${cardId}`, {
+        method: 'DELETE',
+        headers: this.headers,
       }).then((res) => this._checkStatus(res));
     }
 
-    addLike(cardId) {
-      return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-        method: "PUT",
-        headers: this._headers,
+    // addLike(cardId) {
+    //   return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+    //     method: "PUT",
+    //     headers: this.headers,
+    //   }).then((res) => this._checkStatus(res));
+    // }
+
+    // removeLike(cardId) {
+    //   return fetch(`${this._baseUrl}/cards/${cardId}/likes`, {
+    //     method: "DELETE",
+    //     headers: this.headers,
+    //   }).then((res) => this._checkStatus(res));
+    // }
+
+    setUserInfo(data) {
+      return fetch(`${this.baseUrl}/users/me`, {
+        method: 'PATCH',
+        headers: this.headers,
+        body: JSON.stringify({
+          name: `${data.name}`,
+          about: `${data.about}`
+        })
       }).then((res) => this._checkStatus(res));
     }
 
-    removeLike(cardId) {
-      return fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-        method: "DELETE",
-        headers: this._headers,
+    setUserAvatar(data) {
+      return fetch(`${this.baseUrl}/users/me/avatar`, {
+        method: 'PATCH',
+        headers: this.headers,
+        body: JSON.stringify({
+          avatar: `${data.avatar}`
+        })
       }).then((res) => this._checkStatus(res));
     }
 
-    setUserInfo({name, about}) {
-      return fetch(`${this._baseUrl}/users/me`, {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify({ name, about }),
-      }).then((res) => this._checkStatus(res));
+
+    changeLikeCardStatus(cardId, isLiked) {
+      if (!isLiked) {
+        return fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+          method: 'DELETE',
+          headers: this.headers,
+        })
+        .then((res) => this._checkStatus(res));
+      } else {
+        return fetch(`${this.baseUrl}/cards/${cardId}/likes`, {
+          method: 'PUT',
+          headers: this.headers,
+        })
+        .then((res) => this._checkStatus(res));
+      }
     }
 
-    setUserAvatar(avatar) {
-      return fetch(`${this._baseUrl}/users/me/avatar`, {
-        method: "PATCH",
-        headers: this._headers,
-        body: JSON.stringify(avatar),
-      }).then((res) => this._checkStatus(res));
-    }
-
-    changeLikeCardStatus(id, isLiked) {
-      return fetch(`${this._baseUrl}/cards/${id}/likes`, {
-        method: isLiked ? "DELETE" : "PUT",
-        headers: this._headers,
-      }).then((res) => this._checkStatus(res));
-    }
+    // changeLikeCardStatus(cardId, isLiked) {
+    //   const token = localStorage.getItem('jwt');
+    //   return fetch(`${this._baseUrl}/cards/like/${cardId}`, {
+    //     method: isLiked ? "DELETE" : "PUT",
+    //     headers: {
+    //       authorization: `Bearer ${token}`,
+    //       'Content-Type': 'application/json',
+    //   },
+    //   }).then((res) => this._checkStatus(res));
+    // }
 }
 
+
+const token = localStorage.getItem('jwt');
+
 export const api = new Api({
-  baseUrl: "https://mesto.nomoreparties.co/v1/cohort-64",
+  baseUrl: "http://localhost:3001",
   headers: {
-    authorization: "79ee610d-0667-436e-9f24-0d4f28a2fc48",
-    "Content-Type": "application/json",
-  },
+    authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  }
 });

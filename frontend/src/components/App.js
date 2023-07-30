@@ -13,7 +13,8 @@ import ImagePopup from './ImagePopup.js';
 import Footer from './Footer';
 
 ///Auth
-import { authorize, checkToken, register } from "../utils/Auth";
+import * as Auth from '../utils/Auth';
+// import { authorize, checkToken, register } from "../utils/Auth";
 import Register from "./Register";
 import Login from './Login';
 import ProtectedRoute from './ProtectedRoute';  
@@ -30,34 +31,33 @@ function App() {
   const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
   const [isConfirmDeletePopupOpen, setIsConfirmDeletePopupOpen] = useState(false);
 
-  const [userEmail, setUserEmail] = useState({ email: "" });
+  const [userEmail, setUserEmail] = useState('');
   const [loggedIn, setLoggedIn] = useState(false);
-  const [isRegistrSuccess, setIsRegistrSuccess] = useState(false);
+  const [isRegistrSuccess, setIsRegistrSuccess] = useState(true);
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = useState(false);
 
   const isOpen = isEditAvatarPopupOpen || isEditProfilePopupOpen || isAddPlacePopupOpen || selectedCard.link
 
-  const [isLoading, setIsLoading] = useState(false);
- 
+  const [isLoading, setIsLoading] = useState(false); 
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    handleToken();
+  // useEffect(() => {
+  //   handleToken();
 
-    Promise.all([
-      api.getUserInfo(),
-      api.getInitialCards(),
-    ])
-      .then(([userData, cards]) => {
-        setCurrentUser(userData);
+  //   Promise.all([
+  //     api.getUserInfo(),
+  //     api.getInitialCards(),
+  //   ])
+  //     .then(([userData, cards]) => {
+  //       setCurrentUser(userData);
 
-        setCards(cards);
-      })
-      .catch(() => {
-        console.error();
-      })
-  }, []);
+  //       setCards(cards);
+  //     })
+  //     .catch(() => {
+  //       console.error();
+  //     })
+  // }, []);
   
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -67,7 +67,29 @@ function App() {
     setSelectedCard({});
     setIsInfoTooltipPopupOpen(false);
   }
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      Auth.checkToken(jwt)
+        .then((authData) => {
+          setUserEmail(authData.email);
+          setLoggedIn(true);
+          navigate('/', { replace: true });
+        })
+        .catch(err => console.log(err));
+    }
+  }, [navigate]);
 
+  useEffect(() => {
+    if (loggedIn) {
+      Promise.all([api.getUserInfo(), api.getInitialCards()])
+        .then(([userData, cardList]) => {
+          setCurrentUser(userData);
+          setCards(cardList.reverse());
+        })
+        .catch(err => console.log(err))
+    }
+  }, [loggedIn]);
 
 
   useEffect(() => {
@@ -97,8 +119,6 @@ function App() {
       // в каждом запросе в `finally` нужно возвращать обратно начальный текст кнопки
       .finally(() => setIsLoading(false));
   }
- 
-
 
   ///Avatar
   function handleEditAvatarClick() {
@@ -118,9 +138,8 @@ function App() {
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some(i => i._id === currentUser._id);
-    api
-      .changeLikeCardStatus(card._id, isLiked)
+    const isLiked = card.likes.some(i => i === currentUser._id);
+    api.changeLikeCardStatus(card._id, !isLiked)
       .then((newCard) => {
           setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
       })
@@ -170,30 +189,27 @@ function App() {
 /// Registration
   function handleRegistration({ email, password }) {
 
-  register(email, password)
-    .then(setIsRegistrSuccess(true))
+    Auth.register(email, password)
     .then(() => {
+      setIsRegistrSuccess(true);
+      setIsInfoTooltipPopupOpen(true);
       navigate("/signin", { replace: true });
     })
     .catch(() => {
-      setIsRegistrSuccess(false);
-      console.error();
-    })
-    .finally(() => {
       setIsInfoTooltipPopupOpen(true);
-    });
+      setIsRegistrSuccess(false);
+    })
   }
 
 /// Login
-  function handleLogin({ email }) {
-    setLoggedIn(true);
-    setUserEmail({ email });
-    
-  } 
-
+function handleLogin({ email }) {
+  setLoggedIn(true);
+  setUserEmail({ email });
+  
+} 
   function handleAuthorization({ email, password }) {
     const makeRequest = () =>
-      authorize(email, password)
+    Auth.authorize(email, password)
         .then(data => {
           if (data.token) {
             localStorage.setItem("jwt", data.token);
@@ -203,25 +219,12 @@ function App() {
         })
     handleSubmit(makeRequest);
   }
-
-///Token
-  function handleToken() {
-    const jwt = localStorage.getItem("jwt");
-
-    if (jwt) {
-      checkToken(jwt)
-        .then(user => {
-          handleLogin(user.data);
-          navigate("/", { replace: true });
-        })
-        .catch(() => {
-          console.error();
-        })
-    }
-  }
   
   function onSignOut() {
+    setUserEmail('');
+    setLoggedIn(false);
     localStorage.removeItem("jwt");
+
   }
   
   return (

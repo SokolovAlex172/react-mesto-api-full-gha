@@ -64,7 +64,7 @@ const likeCard = (req, res, next) => {
       throw new NotFound(`Карточка с id: ${cardId} не найдена`);
     })
     .then((card) => {
-      res.status(201).send({ card });
+      res.status(201).send(card);
     })
     .catch((error) => {
       if (error.name === 'CastError') {

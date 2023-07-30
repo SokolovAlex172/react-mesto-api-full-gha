@@ -9,13 +9,13 @@ export default function Card({
   }) {
     const currentUser = useContext(CurrentUserContext);
 
-    const isOwn = owner._id === currentUser._id;
+    const isOwn = owner === currentUser._id;
 
-    const isLiked = likes.some(i => i._id === currentUser._id);
+    const isLiked = likes.some( i => i === currentUser._id);
 
     const cardLikeButtonClassName = ( 
       `places__like ${isLiked && 'places__like_active'}` 
-    );; 
+    );
 
   function handleClick() {
     onCardClick({ link, name });
