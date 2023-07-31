@@ -25,7 +25,8 @@ const createCard = (req, res, next) => {
       } else {
         next(error);
       }
-    });
+    })
+    .catch(next);
 };
 
 const deleteCard = (req, res, next) => {
