@@ -50,7 +50,8 @@ const deleteCard = (req, res, next) => {
       } else {
         next(error);
       }
-    });
+    })
+    .catch(next);
 };
 
 const likeCard = (req, res, next) => {
